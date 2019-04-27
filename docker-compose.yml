@@ -1,29 +1,27 @@
 version: "3"
 services:
     client:
-        image: client
+        container_name: client
+        build: ./client
         restart: always
         ports:
             - "3000:3000"
-        volumes:
-            - ./client:/client
-            - /client/node_modules
         links:
             - api
     api:
-        image: api
+        container_name: api
+        build: ./api
         restart: always
         ports:
             - "4000:4000"
-        volumes:
-            - ./api:/api
-            - /api/node_modules
         depends_on:
             - mongo
-    mongodb:
-        image: mongo
-        restart: always
+    mongo:
         container_name: mongo
+        image: mongo
+        expose:
+            - "27017"
+        restart: always
         volumes:
             - ./data:/data/db
         ports:
